@@ -1,4 +1,8 @@
 import { Controller } from '../lib/controller';
-import { AuthService } from './auth.service';
 
-export class AuthController extends Controller {}
+export class AuthController extends Controller {
+	@AuthController.Get('/')
+	async as() {
+		throw Error('asd');
+	}
+}

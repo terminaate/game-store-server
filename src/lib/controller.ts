@@ -40,10 +40,13 @@ export class Controller {
 		return this.createDecorator('put', { path, handlers });
 	}
 
-	private static errorWrapper(cb: RequestHandler) {
+	private static wrapper(cb: RequestHandler) {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				await cb(req, res, next);
+				const response = await cb(req, res, next);
+				if (response as Record<string, any> | undefined) {
+					res.json(response);
+				}
 			} catch (e: any) {
 				exceptionMiddleware(e, req, res);
 			}
@@ -58,7 +61,7 @@ export class Controller {
 		const { path, handlers } = params;
 
 		return (_: any, g: any, descriptor: PropertyDescriptor) => {
-			router[method](path, ...handlers, this.errorWrapper(descriptor.value));
+			router[method](path, ...handlers, this.wrapper(descriptor.value));
 		};
 	}
 }
