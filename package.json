@@ -4,11 +4,11 @@
   "description": "Game store",
   "main": "dist/main.js",
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint -c .eslintrc --ext .ts ./src",
     "start": "cross-env NODE_ENV=prod node ./dist/index.js",
     "start:dev": "tsc-watch --project . --onSuccess \"cross-env NODE_ENV=dev node ./dist/index.js\"",
-    "format": "prettier --write \"src/**/*\""
+    "format": "prettier --write \"src/**/*\"",
+    "lint": "eslint -c .eslintrc --ext .ts ./src",
+    "build": "tsc"
   },
   "repository": "https://github.com/terminaate/game-store",
   "keywords": [],
