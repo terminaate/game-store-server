@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Exception } from '../lib/exception';
 
 export const exceptionMiddleware = (
-	err: Error,
+	err: Error | Exception,
 	req: Request,
 	res: Response
 ): Response => {

@@ -1,7 +1,5 @@
-export class Exception extends Error {
-	constructor(public message: string, public statusCode: number) {
-		super(message);
-	}
+export class Exception {
+	constructor(public message: string | string[], public statusCode: number) {}
 
 	static UnauthorizedException() {
 		return this.NewException('Unauthorized.', 401);
@@ -15,7 +13,7 @@ export class Exception extends Error {
 		return this.NewException('Internal Server Error', 500);
 	}
 
-	static NewException(message: string, statusCode: number) {
+	static NewException(message: string | string[], statusCode: number) {
 		return new Exception(message, statusCode);
 	}
 }

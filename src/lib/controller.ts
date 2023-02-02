@@ -6,6 +6,7 @@ import {
 	Router,
 } from 'express';
 import { exceptionMiddleware } from '../middlewares/exception.middleware';
+import { isObject } from '../utils/isObject';
 
 type RouterMethods =
 	| 'all'
@@ -43,9 +44,14 @@ export class Controller {
 	private static wrapper(cb: RequestHandler) {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const response = await cb(req, res, next);
-				if (response as Record<string, any> | undefined) {
+				const response: any = await cb(req, res, next);
+				if (!response) {
+					return next();
+				}
+				if (isObject(response)) {
 					res.json(response);
+				} else {
+					res.send(response);
 				}
 			} catch (e: any) {
 				exceptionMiddleware(e, req, res);
