@@ -15,6 +15,10 @@ export const UserSchema = new mongoose.Schema({
 		required: true,
 		type: String,
 	},
+	avatar: {
+		type: String,
+		default: 'https://i.imgur.com/hepj9ZS.png',
+	},
 });
 
 UserSchema.methods.setPassword = function (password: string) {

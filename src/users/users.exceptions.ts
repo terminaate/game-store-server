@@ -8,4 +8,8 @@ export class UsersExceptions extends Exception {
 	static UserAlreadyExist() {
 		return super.NewException('User with this username already exist.', 400);
 	}
+
+	static AvatarIsNotImage() {
+		return super.NewException('Avatar url is not response an image.', 400);
+	}
 }
