@@ -1,4 +1,4 @@
-import { UserDocument } from '../models/user.model';
+import { UserDocument } from '../users/models/user.model';
 import { TypedRequest } from './TypedRequest';
 
 export type UserRequest<

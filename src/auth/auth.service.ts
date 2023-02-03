@@ -1,9 +1,9 @@
 import { AuthDto } from './dtos/auth.dto';
-import { User } from '../models/user.model';
+import { User } from '../users/models/user.model';
 import { UserDto } from '../users/dtos/user.dto';
 import { AuthExceptions } from './auth.exceptions';
 import jwt from 'jsonwebtoken';
-import { UserToken } from '../models/user-token.model';
+import { UserToken } from '../users/models/user-token.model';
 
 export class AuthService {
 	static async refreshTokens(refreshToken: string) {

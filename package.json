@@ -1,5 +1,5 @@
 {
-  "name": "gamestore",
+  "name": "game-store-server",
   "version": "1.0.0",
   "description": "Game store",
   "main": "dist/main.js",
