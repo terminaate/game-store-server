@@ -44,7 +44,9 @@ export class Controller {
 	private static wrapper(cb: RequestHandler) {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const response: any = await cb(req, res, next);
+				const response = (await cb(req, res, next)) as
+					| Record<string, unknown>
+					| undefined;
 				if (!response) {
 					return next();
 				}
@@ -66,7 +68,7 @@ export class Controller {
 		const { router } = this;
 		const { path, handlers } = params;
 
-		return (_: any, g: any, descriptor: PropertyDescriptor) => {
+		return (_, propertyKey: string, descriptor: PropertyDescriptor) => {
 			router[method](path, ...handlers, this.wrapper(descriptor.value));
 		};
 	}

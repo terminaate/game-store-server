@@ -17,7 +17,6 @@ export const validationMiddleware = (dto: Class) => {
 				],
 				[]
 			);
-			console.log(messages);
 			return exceptionMiddleware(
 				Exception.NewException(messages, 400),
 				req,

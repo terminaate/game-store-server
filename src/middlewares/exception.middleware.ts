@@ -6,6 +6,9 @@ export const exceptionMiddleware = (
 	req: Request,
 	res: Response
 ): Response => {
+	if (process.env.NODE_ENV === 'dev') {
+		console.log(err);
+	}
 	if (err instanceof Exception) {
 		const { message, statusCode } = err;
 		res.status(statusCode);

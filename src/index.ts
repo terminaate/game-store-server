@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { apiRouter } from './routers/apiRouter';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 
 dotenv.config({ path: `.${process.env.NODE_ENV}.env` });
 
@@ -12,6 +13,7 @@ async function bootstrap() {
 	await mongoose.connect(MONGO_URI!);
 
 	app.use(express.json({ limit: '10mb' }));
+	app.use(cookieParser(process.env.COOKIE_SECRET));
 	app.use('/api', apiRouter);
 
 	await app.listen(PORT, () =>
