@@ -80,4 +80,15 @@ export class AuthService {
 		};
 		return { response, refreshToken };
 	}
+
+	static async verifyAccessToken(accessToken: string) {
+		const { id } = jwt.verify(
+			accessToken,
+			process.env.JWT_ACCESS_SECRET!
+		) as Record<string, any>;
+		if (!id) {
+			throw AuthExceptions.UnauthorizedException();
+		}
+		return id;
+	}
 }

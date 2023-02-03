@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { apiRouter } from './routers/apiRouter';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import { bodyExceptionMiddleware } from './middlewares/body-exception.middleware';
 
 dotenv.config({ path: `.${process.env.NODE_ENV}.env` });
 
@@ -15,6 +16,7 @@ async function bootstrap() {
 	app.use(express.json({ limit: '10mb' }));
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 	app.use('/api', apiRouter);
+	app.use(bodyExceptionMiddleware);
 
 	await app.listen(PORT, () =>
 		console.log('Server listening on http://127.0.0.1:' + PORT)
