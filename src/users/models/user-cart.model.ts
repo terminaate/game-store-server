@@ -4,20 +4,17 @@ export const UserCartSchema = new mongoose.Schema({
 	gameId: {
 		required: true,
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Game'
+		ref: 'Game',
 	},
 	userId: {
 		ref: 'User',
 		required: true,
-		type: mongoose.Schema.Types.ObjectId
-	}
+		type: mongoose.Schema.Types.ObjectId,
+	},
 });
 
 export type IUserCart = InferSchemaType<typeof UserCartSchema>;
 
 export type UserCartDocument = HydratedDocument<IUserCart>;
 
-export const UserCart = mongoose.model<IUserCart>(
-	'UserCart',
-	UserCartSchema
-);
+export const UserCart = mongoose.model<IUserCart>('UserCart', UserCartSchema);

@@ -9,7 +9,7 @@ import { GameDto } from './dtos/game.dto';
 export class GamesService {
 	private static async validateImages(images: string[]) {
 		for (const image of images) {
-			if (!await isImageUrl(image)) {
+			if (!(await isImageUrl(image))) {
 				throw GamesExceptions.GameImagesInNotValid();
 			}
 		}
@@ -39,7 +39,10 @@ export class GamesService {
 			await this.validateImages(images);
 		}
 		for (const key in patchGameDto) {
-			if (GameSchema.pathType(key) === 'real' && game.get(key) !== patchGameDto[key]) {
+			if (
+				GameSchema.pathType(key) === 'real' &&
+				game.get(key) !== patchGameDto[key]
+			) {
 				game.set(key, patchGameDto[key]);
 			}
 		}

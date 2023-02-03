@@ -5,30 +5,30 @@ export const UserSchema = new mongoose.Schema({
 	username: {
 		required: true,
 		type: String,
-		unique: true
+		unique: true,
 	},
 	password: {
 		required: true,
-		type: String
+		type: String,
 	},
 	salt: {
 		required: true,
-		type: String
+		type: String,
 	},
 	avatar: {
 		type: String,
-		default: 'https://i.imgur.com/hepj9ZS.png'
+		default: 'https://i.imgur.com/hepj9ZS.png',
 	},
 });
 
-UserSchema.methods.setPassword = function(password: string) {
+UserSchema.methods.setPassword = function (password: string) {
 	this.salt = crypto.randomBytes(16).toString('hex');
 	this.password = crypto
 		.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512')
 		.toString('hex');
 };
 
-UserSchema.methods.validatePassword = function(password: string) {
+UserSchema.methods.validatePassword = function (password: string) {
 	const newHashedPassword = crypto
 		.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512')
 		.toString('hex');

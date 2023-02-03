@@ -23,10 +23,7 @@ export class UsersService {
 
 	static async patchUser(user: UserDocument, patchUserDto: PatchUserDto) {
 		const { username, avatar } = patchUserDto;
-		if (
-			username &&
-			(await User.findOne({ username }))
-		) {
+		if (username && (await User.findOne({ username }))) {
 			throw UsersExceptions.UserAlreadyExist();
 		}
 
@@ -53,7 +50,12 @@ export class UsersService {
 	}
 
 	private static async createCartDto(cartItems: UserCartDocument[]) {
-		return Promise.all(cartItems.map(async o => new GameDto(await GamesService.getGameById(o.gameId as any))));
+		return Promise.all(
+			cartItems.map(
+				async (o) =>
+					new GameDto(await GamesService.getGameById(o.gameId as any))
+			)
+		);
 	}
 
 	static async getUserCartItems(user: UserDocument) {
@@ -65,7 +67,7 @@ export class UsersService {
 		const userCartItems = await UserCart.find({ userId: user.id });
 		for (const cartItem of cartItems) {
 			await GamesService.getGameById(cartItem);
-			const item = userCartItems.findIndex(o => o === cartItem as any);
+			const item = userCartItems.findIndex((o) => o === (cartItem as any));
 			if (item > 0) {
 				await userCartItems[item].delete();
 				userCartItems.splice(item, item);
@@ -76,7 +78,7 @@ export class UsersService {
 
 	static async addCartItem(user: UserDocument, gameId: string) {
 		const game = await GamesService.getGameById(gameId);
-		if (!await UserCart.findOne({ userId: user.id, gameId })) {
+		if (!(await UserCart.findOne({ userId: user.id, gameId }))) {
 			await UserCart.create({ userId: user.id, gameId });
 		}
 		return new GameDto(game);

@@ -16,7 +16,9 @@ export class UsersController extends Controller {
 	}
 
 	@UsersController.Get('/:userId')
-	async getUser(req: TypedRequest<Record<string, unknown>, { userId: string }>) {
+	async getUser(
+		req: TypedRequest<Record<string, unknown>, { userId: string }>
+	) {
 		const user = await UsersService.getUserById(req.params.userId);
 		return new UserDto(user);
 	}
@@ -41,7 +43,11 @@ export class UsersController extends Controller {
 		return UsersService.getUserCartItems(req.user);
 	}
 
-	@UsersController.Put('/@me/cart', authMiddleware, validationMiddleware(CartItemDto))
+	@UsersController.Put(
+		'/@me/cart',
+		authMiddleware,
+		validationMiddleware(CartItemDto)
+	)
 	async addCartItem(req: UserRequest<CartItemDto>) {
 		return UsersService.addCartItem(req.user, req.body.gameId);
 	}

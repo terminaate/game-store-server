@@ -21,7 +21,7 @@ export const GameSchema = new mongoose.Schema({
 	price: { type: Number, required: true },
 	// Here we are storage a discount PERCENT
 	discount: Number,
-	images: [{ type: String}],
+	images: [{ type: String }],
 });
 
 export type IGame = InferSchemaType<typeof GameSchema>;

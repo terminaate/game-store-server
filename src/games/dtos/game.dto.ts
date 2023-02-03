@@ -1,5 +1,5 @@
 export class GameDto {
-	id;
+	id: string;
 	name: string;
 	description: string;
 	genre: string;
