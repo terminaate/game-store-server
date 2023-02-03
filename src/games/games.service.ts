@@ -55,4 +55,9 @@ export class GamesService {
 		await game.delete();
 		return new GameDto(game);
 	}
+
+	static async getAllGames() {
+		const allGames = await Game.find();
+		return allGames.map((o) => new GameDto(o));
+	}
 }

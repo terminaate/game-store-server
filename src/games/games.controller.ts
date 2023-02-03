@@ -26,6 +26,11 @@ export class GamesController extends Controller {
 		return new GameDto(game);
 	}
 
+	@GamesController.Get('/')
+	async getAllGames() {
+		return GamesService.getAllGames();
+	}
+
 	@GamesController.Patch(
 		'/:gameId',
 		authMiddleware,
