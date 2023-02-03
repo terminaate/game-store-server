@@ -39,4 +39,18 @@ export class AuthController extends Controller {
 		res.status(200);
 		return new ResponseDto('Success', 200);
 	}
+
+	@AuthController.Post('/refresh')
+	async refresh(req: Request, res: Response) {
+		const { refreshToken: oldRefreshToken } = req.signedCookies;
+		const { accessToken, refreshToken } = await AuthService.refreshTokens(
+			oldRefreshToken
+		);
+		res.cookie('refreshToken', refreshToken, {
+			httpOnly: true,
+			maxAge: 1000 * 60 * 60 * 24 * 7,
+			signed: true,
+		});
+		return { accessToken };
+	}
 }

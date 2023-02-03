@@ -6,6 +6,14 @@ import jwt from 'jsonwebtoken';
 import { UserToken } from '../models/user-token.model';
 
 export class AuthService {
+	static async refreshTokens(refreshToken: string) {
+		const userToken = await UserToken.findOne({ refreshToken });
+		if (!userToken) {
+			throw AuthExceptions.ForbiddenException();
+		}
+		return this.generateTokens(userToken.get('userId'));
+	}
+
 	static async generateTokens(userId: string, save = true) {
 		// TODO
 		// add sessions system
