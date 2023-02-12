@@ -1,11 +1,23 @@
 import { AuthDto } from './dtos/auth.dto';
-import { User } from '../users/models/user.model';
-import { UserDto } from '../users/dtos/user.dto';
+import { User, UserDocument } from '@/users/models/user.model';
+import { UserDto } from '@/users/dtos/user.dto';
 import { AuthExceptions } from './auth.exceptions';
 import jwt from 'jsonwebtoken';
-import { UserToken } from '../users/models/user-token.model';
+import { UserToken } from '@/users/models/user-token.model';
 
 export class AuthService {
+	private static createResponseDto(
+		user: UserDocument,
+		accessToken: string,
+		refreshToken: string
+	) {
+		const response = {
+			accessToken,
+			user: new UserDto(user),
+		};
+		return { response, refreshToken };
+	}
+
 	static async refreshTokens(refreshToken: string) {
 		const userToken = await UserToken.findOne({ refreshToken });
 		if (!userToken) {
@@ -59,11 +71,7 @@ export class AuthService {
 		user.setPassword(password);
 		await user.save();
 		const { accessToken, refreshToken } = await this.generateTokens(user.id);
-		const response = {
-			accessToken,
-			user: new UserDto(user),
-		};
-		return { response, refreshToken };
+		return this.createResponseDto(user, accessToken, refreshToken);
 	}
 
 	static async login({ username, password }: AuthDto) {
@@ -74,14 +82,10 @@ export class AuthService {
 		const { accessToken, refreshToken } = await this.generateTokens(
 			candidate.id
 		);
-		const response = {
-			accessToken,
-			user: new UserDto(candidate),
-		};
-		return { response, refreshToken };
+		return this.createResponseDto(candidate, accessToken, refreshToken);
 	}
 
-	static async verifyAccessToken(accessToken: string) {
+	static verifyAccessToken(accessToken: string): string {
 		const { id } = jwt.verify(
 			accessToken,
 			process.env.JWT_ACCESS_SECRET!
@@ -90,5 +94,6 @@ export class AuthService {
 			throw AuthExceptions.UnauthorizedException();
 		}
 		return id;
+		// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZThlYTEwZmY2MDlmZDhmZGJlYTg0YiIsImlhdCI6MTY3NjIwODY1NiwiZXhwIjoxNjc2Mjk1MDU2fQ.gpWEVWhwmpvTjFRY9CJLba9O694sr89T40MOjqgvFrg
 	}
 }

@@ -1,10 +1,12 @@
-import { Controller } from '../lib/controller';
-import { validationMiddleware } from '../middlewares/validation.middleware';
+import { Controller } from '@/lib/controller';
+import { validationMiddleware } from '@/middlewares/validation.middleware';
 import { AuthDto } from './dtos/auth.dto';
 import { AuthService } from './auth.service';
-import { TypedRequest } from '../types/TypedRequest';
+import { TypedRequest } from '@/types/TypedRequest';
 import { Request, Response } from 'express';
-import { ResponseDto } from '../dtos/response.dto';
+import { ResponseDto } from '@/dtos/response.dto';
+
+const refreshMaxAge = 1000 * 60 * 60 * 24 * 7;
 
 export class AuthController extends Controller {
 	@AuthController.Post('/register', validationMiddleware(AuthDto))
@@ -13,7 +15,7 @@ export class AuthController extends Controller {
 		res.status(201);
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
-			maxAge: 1000 * 60 * 60 * 24 * 7,
+			maxAge: refreshMaxAge,
 			signed: true,
 		});
 		return response;
@@ -25,7 +27,7 @@ export class AuthController extends Controller {
 		res.status(201);
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
-			maxAge: 1000 * 60 * 60 * 24 * 7,
+			maxAge: refreshMaxAge,
 			signed: true,
 		});
 		return response;
@@ -48,7 +50,7 @@ export class AuthController extends Controller {
 		);
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
-			maxAge: 1000 * 60 * 60 * 24 * 7,
+			maxAge: refreshMaxAge,
 			signed: true,
 		});
 		return { accessToken };

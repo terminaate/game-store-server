@@ -1,4 +1,4 @@
-import { ResponseDto } from '../dtos/response.dto';
+import { ResponseDto } from '@/dtos/response.dto';
 import { NextFunction, Response, Request } from 'express';
 
 export const bodyExceptionMiddleware = (

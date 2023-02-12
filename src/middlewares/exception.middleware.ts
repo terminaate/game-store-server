@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Exception } from '../lib/exception';
+import { Exception } from '@/lib/exception';
 
 export const exceptionMiddleware = (
 	err: Error | Exception,

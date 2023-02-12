@@ -1,10 +1,10 @@
-import { Controller } from '../lib/controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
-import { UserRequest } from '../types/UserRequest';
+import { Controller } from '@/lib/controller';
+import { authMiddleware } from '@/middlewares/auth.middleware';
+import { UserRequest } from '@/types/UserRequest';
 import { UsersService } from './users.service';
-import { validationMiddleware } from '../middlewares/validation.middleware';
+import { validationMiddleware } from '@/middlewares/validation.middleware';
 import { PatchUserDto } from './dtos/patch-user.dto';
-import { TypedRequest } from '../types/TypedRequest';
+import { TypedRequest } from '@/types/TypedRequest';
 import { Response } from 'express';
 import { CartItemDto } from './dtos/cart-item.dto';
 import { UserDto } from './dtos/user.dto';

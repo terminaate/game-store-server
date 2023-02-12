@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { AuthController } from '../auth/auth.controller';
-import { UsersController } from '../users/users.controller';
-import { GamesController } from '../games/games.controller';
+import { AuthController } from '@/auth/auth.controller';
+import { UsersController } from '@/users/users.controller';
+import { GamesController } from '@/games/games.controller';
 
 export const apiRouter = Router();
 

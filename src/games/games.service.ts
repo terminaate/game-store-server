@@ -2,7 +2,7 @@ import { CreateGameDto } from './dtos/create-game.dto';
 import { Game, GameDocument, GameSchema } from './models/game.model';
 import { GamesExceptions } from './games.exceptions';
 import { PatchGameDto } from './dtos/patch-game.dto';
-import { isImageUrl } from '../utils/isImageUrl';
+import { isImageUrl } from '@/utils/isImageUrl';
 import { Types } from 'mongoose';
 import { GameDto } from './dtos/game.dto';
 

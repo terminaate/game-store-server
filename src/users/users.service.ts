@@ -2,12 +2,12 @@ import { UsersExceptions } from './users.exceptions';
 import { User, UserDocument, UserSchema } from './models/user.model';
 import { Types } from 'mongoose';
 import { PatchUserDto } from './dtos/patch-user.dto';
-import { isImageUrl } from '../utils/isImageUrl';
+import { isImageUrl } from '@/utils/isImageUrl';
 import { UserToken } from './models/user-token.model';
-import { GamesService } from '../games/games.service';
+import { GamesService } from '@/games/games.service';
 import { UserCart, UserCartDocument } from './models/user-cart.model';
 import { UserDto } from './dtos/user.dto';
-import { GameDto } from '../games/dtos/game.dto';
+import { GameDto } from '@/games/dtos/game.dto';
 
 export class UsersService {
 	static async getUserById(userId: string) {

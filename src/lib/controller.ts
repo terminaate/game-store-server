@@ -5,8 +5,8 @@ import {
 	Response,
 	Router,
 } from 'express';
-import { exceptionMiddleware } from '../middlewares/exception.middleware';
-import { isObject } from '../utils/isObject';
+import { exceptionMiddleware } from '@/middlewares/exception.middleware';
+import { isObject } from '@/utils/isObject';
 
 type RouterMethods =
 	| 'all'

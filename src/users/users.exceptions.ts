@@ -1,4 +1,4 @@
-import { Exception } from '../lib/exception';
+import { Exception } from '@/lib/exception';
 
 export class UsersExceptions extends Exception {
 	static UserIdIsNotExist() {

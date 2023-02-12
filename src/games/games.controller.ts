@@ -1,10 +1,10 @@
-import { Controller } from '../lib/controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
-import { validationMiddleware } from '../middlewares/validation.middleware';
+import { Controller } from '@/lib/controller';
+import { authMiddleware } from '@/middlewares/auth.middleware';
+import { validationMiddleware } from '@/middlewares/validation.middleware';
 import { CreateGameDto } from './dtos/create-game.dto';
-import { UserRequest } from '../types/UserRequest';
+import { UserRequest } from '@/types/UserRequest';
 import { GamesService } from './games.service';
-import { TypedRequest } from '../types/TypedRequest';
+import { TypedRequest } from '@/types/TypedRequest';
 import { PatchGameDto } from './dtos/patch-game.dto';
 import { GameDto } from './dtos/game.dto';
 
