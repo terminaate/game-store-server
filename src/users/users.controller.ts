@@ -8,6 +8,7 @@ import { TypedRequest } from '@/types/TypedRequest';
 import { Response } from 'express';
 import { CartItemDto } from './dtos/cart-item.dto';
 import { UserDto } from './dtos/user.dto';
+import { Types } from 'mongoose';
 
 export class UsersController extends Controller {
 	@UsersController.Get('/@me', authMiddleware)
@@ -17,7 +18,7 @@ export class UsersController extends Controller {
 
 	@UsersController.Get('/:userId')
 	async getUser(
-		req: TypedRequest<Record<string, unknown>, { userId: string }>
+		req: TypedRequest<Record<string, unknown>, { userId: Types.ObjectId }>
 	) {
 		const user = await UsersService.getUserById(req.params.userId);
 		return new UserDto(user);
@@ -53,7 +54,7 @@ export class UsersController extends Controller {
 	}
 
 	@UsersController.Delete('/@me/cart', authMiddleware)
-	async deleteCartItems(req: UserRequest<string[]>) {
+	async deleteCartItems(req: UserRequest<Types.ObjectId[]>) {
 		return UsersService.deleteCartItems(req.user, req.body);
 	}
 }

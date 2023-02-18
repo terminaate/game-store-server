@@ -1,5 +1,5 @@
 import { CreateGameDto } from './dtos/create-game.dto';
-import { Game, GameDocument, GameSchema } from './models/game.model';
+import { Game, GameDocument } from './models/game.model';
 import { GamesExceptions } from './games.exceptions';
 import { PatchGameDto } from './dtos/patch-game.dto';
 import { isImageUrl } from '@/utils/isImageUrl';
@@ -21,7 +21,7 @@ export class GamesService {
 		return new GameDto(newGame);
 	}
 
-	static async getGameById(id: string): Promise<GameDocument> {
+	static async getGameById(id: Types.ObjectId): Promise<GameDocument> {
 		if (!id || !Types.ObjectId.isValid(id)) {
 			throw GamesExceptions.GameNotFound();
 		}
@@ -32,25 +32,35 @@ export class GamesService {
 		return game;
 	}
 
-	static async patchGame(gameId: string, patchGameDto: PatchGameDto) {
+	static async patchGame(gameId: Types.ObjectId, patchGameDto: PatchGameDto) {
+		const whiteList = [
+			'name',
+			'description',
+			'genre',
+			'developer',
+			'publisher',
+			'features',
+			'platform',
+			'releaseDate',
+			'price',
+			'discount',
+			'images',
+		];
 		const game = await this.getGameById(gameId);
 		const { images } = patchGameDto;
 		if (images) {
 			await this.validateImages(images);
 		}
 		for (const key in patchGameDto) {
-			if (
-				GameSchema.pathType(key) === 'real' &&
-				game.get(key) !== patchGameDto[key]
-			) {
-				game.set(key, patchGameDto[key]);
+			if (whiteList.includes(key) && game[key] !== patchGameDto[key]) {
+				game[key] = patchGameDto[key];
 			}
 		}
 		await game.save();
 		return new GameDto(game);
 	}
 
-	static async deleteGame(gameId: string) {
+	static async deleteGame(gameId: Types.ObjectId) {
 		const game = await this.getGameById(gameId);
 		await game.delete();
 		return new GameDto(game);

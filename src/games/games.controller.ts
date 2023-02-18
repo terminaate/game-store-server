@@ -7,6 +7,7 @@ import { GamesService } from './games.service';
 import { TypedRequest } from '@/types/TypedRequest';
 import { PatchGameDto } from './dtos/patch-game.dto';
 import { GameDto } from './dtos/game.dto';
+import { Types } from 'mongoose';
 
 export class GamesController extends Controller {
 	@GamesController.Post(
@@ -20,7 +21,7 @@ export class GamesController extends Controller {
 
 	@GamesController.Get('/:gameId')
 	async getGame(
-		req: TypedRequest<Record<string, unknown>, { gameId: string }>
+		req: TypedRequest<Record<string, unknown>, { gameId: Types.ObjectId }>
 	) {
 		const game = await GamesService.getGameById(req.params.gameId);
 		return new GameDto(game);
@@ -36,13 +37,13 @@ export class GamesController extends Controller {
 		authMiddleware,
 		validationMiddleware(PatchGameDto)
 	)
-	async patchGame(req: UserRequest<PatchGameDto, { gameId: string }>) {
+	async patchGame(req: UserRequest<PatchGameDto, { gameId: Types.ObjectId }>) {
 		return GamesService.patchGame(req.params.gameId, req.body);
 	}
 
 	@GamesController.Delete('/:gameId', authMiddleware)
 	async deleteGame(
-		req: UserRequest<Record<string, unknown>, { gameId: string }>
+		req: UserRequest<Record<string, unknown>, { gameId: Types.ObjectId }>
 	) {
 		return GamesService.deleteGame(req.params.gameId);
 	}

@@ -15,7 +15,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "repository": "https://github.com/terminaate/game-store",
+  "repository": "https://github.com/terminaate/game-store-server",
   "keywords": [],
   "author": "Terminaate",
   "license": "MIT",

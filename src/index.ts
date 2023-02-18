@@ -9,12 +9,12 @@ import { validateEnvVariables } from './utils/validateEnvVariables';
 
 dotenv.config({ path: `.${process.env.NODE_ENV}.env` });
 validateEnvVariables();
-
+process.env;
 async function bootstrap() {
 	const app = express();
 
 	const { PORT, MONGO_URI } = process.env;
-	await mongoose.connect(MONGO_URI!);
+	await mongoose.connect(MONGO_URI);
 
 	app.use(
 		cors({

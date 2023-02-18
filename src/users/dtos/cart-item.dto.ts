@@ -1,6 +1,7 @@
-import { IsString } from 'class-validator';
+import { IsMongoId } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CartItemDto {
-	@IsString()
-	gameId: string;
+	@IsMongoId()
+	gameId: Types.ObjectId;
 }

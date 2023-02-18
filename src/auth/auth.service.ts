@@ -4,6 +4,7 @@ import { UserDto } from '@/users/dtos/user.dto';
 import { AuthExceptions } from './auth.exceptions';
 import jwt from 'jsonwebtoken';
 import { UserToken } from '@/users/models/user-token.model';
+import { Types } from 'mongoose';
 
 export class AuthService {
 	private static createResponseDto(
@@ -23,10 +24,10 @@ export class AuthService {
 		if (!userToken) {
 			throw AuthExceptions.ForbiddenException();
 		}
-		return this.generateTokens(userToken.get('userId'));
+		return this.generateTokens(userToken.userId);
 	}
 
-	static async generateTokens(userId: string, save = true) {
+	static async generateTokens(userId: Types.ObjectId, save = true) {
 		// TODO
 		// add sessions system
 		const accessToken = jwt.sign(
@@ -85,15 +86,25 @@ export class AuthService {
 		return this.createResponseDto(candidate, accessToken, refreshToken);
 	}
 
-	static verifyAccessToken(accessToken: string): string {
+	static verifyRefreshToken(refreshToken: string): Types.ObjectId {
 		const { id } = jwt.verify(
-			accessToken,
-			process.env.JWT_ACCESS_SECRET!
+			refreshToken,
+			process.env.JWT_REFRESH_SECRET
 		) as Record<string, any>;
 		if (!id) {
 			throw AuthExceptions.UnauthorizedException();
 		}
 		return id;
-		// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZThlYTEwZmY2MDlmZDhmZGJlYTg0YiIsImlhdCI6MTY3NjIwODY1NiwiZXhwIjoxNjc2Mjk1MDU2fQ.gpWEVWhwmpvTjFRY9CJLba9O694sr89T40MOjqgvFrg
+	}
+
+	static verifyAccessToken(accessToken: string): Types.ObjectId {
+		const { id } = jwt.verify(
+			accessToken,
+			process.env.JWT_ACCESS_SECRET
+		) as Record<string, any>;
+		if (!id) {
+			throw AuthExceptions.UnauthorizedException();
+		}
+		return id;
 	}
 }
