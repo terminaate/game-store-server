@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-type Model = {
-	name: string;
-	schema: mongoose.Schema;
-};
-
 export class MemoryDatabase {
 	private mongoose: typeof mongoose;
 	private mongodb: MongoMemoryServer;
