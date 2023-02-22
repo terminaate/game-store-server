@@ -3,6 +3,7 @@ import { UserDto } from '@/users/dtos/user.dto';
 import { MemoryDatabase } from '@/testing-utils/MemoryDatabase';
 import { AuthExceptions } from '@/auth/auth.exceptions';
 import { UserToken } from '@/users/models/user-token.model';
+import { testDto } from '@/testing-utils/testDto';
 
 type AuthResponse = {
 	refreshToken: string;
@@ -16,15 +17,12 @@ const testAuthResponse = (res: AuthResponse) => {
 	expect(Object.keys(res)).toEqual(['response', 'refreshToken']);
 	expect(typeof res.refreshToken).toBe('string');
 	expect(Object.keys(res.response)).toEqual(['accessToken', 'user']);
-	expect(Object.keys(res.response.user)).toEqual(['id', 'username', 'avatar']);
+	testDto(res.response.user, UserDto);
 };
 
 describe('AuthService', () => {
-	let memDb: MemoryDatabase;
+	const memDb = new MemoryDatabase();
 
-	beforeAll(async () => {
-		memDb = new MemoryDatabase();
-	});
 	afterAll(() => {
 		memDb.closeDatabase();
 	});

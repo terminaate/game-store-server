@@ -8,6 +8,7 @@ import { TypedRequest } from '@/types/TypedRequest';
 import { PatchGameDto } from './dtos/patch-game.dto';
 import { GameDto } from './dtos/game.dto';
 import { Types } from 'mongoose';
+import { QueryRequest } from '@/types/QueryRequest';
 
 export class GamesController extends Controller {
 	@GamesController.Post(
@@ -28,8 +29,10 @@ export class GamesController extends Controller {
 	}
 
 	@GamesController.Get('/')
-	async getAllGames() {
-		return GamesService.getAllGames();
+	async getAllGames({ query }: QueryRequest<{ page: string; limit: string }>) {
+		const page = query.page ? (isNaN(+query.page) ? 1 : +query.page) : 1;
+		const limit = query.limit ? (isNaN(+query.limit) ? 10 : +query.limit) : 10;
+		return GamesService.getAllGames(page, limit);
 	}
 
 	@GamesController.Patch(

@@ -58,7 +58,7 @@ export class CreateGameDto {
 	platform: string[];
 
 	@IsDateString()
-	releaseDate: Date;
+	releaseDate: string;
 
 	@IsNumber()
 	price: number;

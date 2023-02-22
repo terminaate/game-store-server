@@ -8,5 +8,6 @@ namespace NodeJS {
 		JWT_REFRESH_SECRET: string;
 		COOKIE_SECRET: string;
 		CLIENT_URL: string;
+		NODE_ENV: 'dev' | 'prod';
 	}
 }

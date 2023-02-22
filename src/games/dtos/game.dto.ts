@@ -1,5 +1,7 @@
+import { Types } from 'mongoose';
+
 export class GameDto {
-	id: string;
+	id: Types.ObjectId;
 	name: string;
 	description: string;
 	genre: string;

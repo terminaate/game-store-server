@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1677053365198" clover="3.2.0">
+  <project timestamp="1677053365198" name="All files">
+    <metrics statements="90" coveredstatements="56" conditionals="17" coveredconditionals="5" methods="23" coveredmethods="12" elements="130" coveredelements="73" complexity="0" loc="90" ncloc="90" packages="6" files="8" classes="8"/>
+    <package name="games">
+      <metrics statements="41" coveredstatements="19" conditionals="11" coveredconditionals="1" methods="9" coveredmethods="4"/>
+      <file name="games.exceptions.ts" path="C:\projects\game-store-server\src\games\games.exceptions.ts">
+        <metrics statements="4" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+      </file>
+      <file name="games.service.ts" path="C:\projects\game-store-server\src\games\games.service.ts">
+        <metrics statements="37" coveredstatements="17" conditionals="11" coveredconditionals="1" methods="7" coveredmethods="4"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="11" count="16" type="stmt"/>
+        <line num="12" count="16" type="cond" truecount="0" falsecount="1"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="19" count="16" type="stmt"/>
+        <line num="20" count="16" type="stmt"/>
+        <line num="21" count="16" type="stmt"/>
+        <line num="25" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="70" count="16" type="stmt"/>
+        <line num="71" count="16" type="stmt"/>
+        <line num="77" count="55" type="stmt"/>
+        <line num="78" count="9" type="stmt"/>
+        <line num="79" count="9" type="cond" truecount="1" falsecount="1"/>
+        <line num="80" count="9" type="stmt"/>
+      </file>
+    </package>
+    <package name="games.dtos">
+      <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="game.dto.ts" path="C:\projects\game-store-server\src\games\dtos\game.dto.ts">
+        <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="18" count="126" type="stmt"/>
+        <line num="19" count="126" type="stmt"/>
+        <line num="20" count="126" type="stmt"/>
+        <line num="21" count="126" type="stmt"/>
+        <line num="22" count="126" type="stmt"/>
+        <line num="23" count="126" type="stmt"/>
+        <line num="24" count="126" type="stmt"/>
+        <line num="25" count="126" type="stmt"/>
+        <line num="26" count="126" type="stmt"/>
+        <line num="27" count="126" type="stmt"/>
+        <line num="28" count="126" type="stmt"/>
+        <line num="29" count="126" type="stmt"/>
+      </file>
+    </package>
+    <package name="games.models">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="game.model.ts" path="C:\projects\game-store-server\src\games\models\game.model.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="lib">
+      <metrics statements="6" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="0"/>
+      <file name="exception.ts" path="C:\projects\game-store-server\src\lib\exception.ts">
+        <metrics statements="6" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="testing-utils">
+      <metrics statements="20" coveredstatements="14" conditionals="2" coveredconditionals="1" methods="7" coveredmethods="6"/>
+      <file name="MemoryDatabase.ts" path="C:\projects\game-store-server\src\testing-utils\MemoryDatabase.ts">
+        <metrics statements="15" coveredstatements="9" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="19" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="27" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+      </file>
+      <file name="testDto.ts" path="C:\projects\game-store-server\src\testing-utils\testDto.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="55" type="stmt"/>
+        <line num="3" count="55" type="stmt"/>
+        <line num="4" count="660" type="stmt"/>
+        <line num="5" count="660" type="stmt"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="7" coveredstatements="6" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
+      <file name="isImageUrl.ts" path="C:\projects\game-store-server\src\utils\isImageUrl.ts">
+        <metrics statements="7" coveredstatements="6" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="16" type="stmt"/>
+        <line num="5" count="16" type="stmt"/>
+        <line num="7" count="16" type="cond" truecount="3" falsecount="1"/>
+        <line num="8" count="16" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

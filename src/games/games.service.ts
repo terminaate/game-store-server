@@ -66,8 +66,18 @@ export class GamesService {
 		return new GameDto(game);
 	}
 
-	static async getAllGames() {
-		const allGames = await Game.find();
-		return allGames.map((o) => new GameDto(o));
+	static async getAllGames(page: number, pageLimit: number) {
+		pageLimit = Math.abs(pageLimit);
+		page = Math.abs(page) || 1;
+		const games = (
+			await Game.find(
+				{},
+				{},
+				{ limit: pageLimit, skip: (page - 1) * pageLimit }
+			)
+		).map((o) => new GameDto(o));
+		const allGamesCount = await Game.countDocuments();
+		const totalPages = Math.ceil(allGamesCount / pageLimit) || 1;
+		return { totalPages, currentPage: page, games };
 	}
 }
