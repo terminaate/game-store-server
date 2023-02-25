@@ -10,10 +10,6 @@ import { loggerMiddleware } from '@/middlewares/logger.middleware';
 import { ResponseDto } from '@/dtos/response.dto';
 import { AuthService } from '@/auth/auth.service';
 import { RolesService } from '@/roles/roles.service';
-import { AuthController } from '@/auth/auth.controller';
-import { GamesController } from '@/games/games.controller';
-import { RolesController } from '@/roles/roles.controller';
-import { UsersController } from '@/users/users.controller';
 
 dotenv.config({ path: `.${process.env.NODE_ENV}.env` });
 validateEnvVariables();
