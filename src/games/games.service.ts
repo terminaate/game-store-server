@@ -12,25 +12,6 @@ export class GamesService {
 	// TODO
 	// Add likes || rating || comments
 
-	private static async validatePermissions(
-		game: GameDocument,
-		userId: Types.ObjectId,
-		permissions = 100
-	) {
-		const userPermissions = await RolesService.getUserPermissions(userId);
-		if (game.author !== userId && userPermissions <= permissions) {
-			throw Exception.ForbiddenException();
-		}
-	}
-
-	private static async validateImages(images: string[]) {
-		for (const image of images) {
-			if (!(await isImageUrl(image))) {
-				throw GamesException.GameImagesInNotValid();
-			}
-		}
-	}
-
 	static async createGame(createGameDto: CreateGameDto) {
 		await this.validateImages(createGameDto.images);
 		const newGame = await Game.create(createGameDto);
@@ -88,5 +69,24 @@ export class GamesService {
 		const allGamesCount = await Game.countDocuments();
 		const totalPages = Math.ceil(allGamesCount / pageLimit) || 1;
 		return { totalPages, currentPage: page, games };
+	}
+
+	private static async validatePermissions(
+		game: GameDocument,
+		userId: Types.ObjectId,
+		permissions = 100
+	) {
+		const userPermissions = await RolesService.getUserPermissions(userId);
+		if (game.author !== userId && userPermissions <= permissions) {
+			throw Exception.ForbiddenException();
+		}
+	}
+
+	private static async validateImages(images: string[]) {
+		for (const image of images) {
+			if (!(await isImageUrl(image))) {
+				throw GamesException.GameImagesInNotValid();
+			}
+		}
 	}
 }

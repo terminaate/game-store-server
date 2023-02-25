@@ -46,15 +46,6 @@ export class UsersService {
 		return UserDto.createDto(user);
 	}
 
-	private static async createCartDto(cartItems: UserCartDocument[]) {
-		return Promise.all(
-			cartItems.map(
-				async (o) =>
-					new GameDto(await GamesService.getGameById(o.gameId as any))
-			)
-		);
-	}
-
 	static async getUserCartItems(user: UserDocument) {
 		const cartItems = await UserCart.find({ userId: user.id });
 		return this.createCartDto(cartItems);
@@ -82,5 +73,14 @@ export class UsersService {
 			await UserCart.create({ userId: user.id, gameId });
 		}
 		return new GameDto(game);
+	}
+
+	private static async createCartDto(cartItems: UserCartDocument[]) {
+		return Promise.all(
+			cartItems.map(
+				async (o) =>
+					new GameDto(await GamesService.getGameById(o.gameId as any))
+			)
+		);
 	}
 }

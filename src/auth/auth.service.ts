@@ -21,18 +21,6 @@ export class AuthService {
 		}
 	}
 
-	private static async createResponseDto(
-		user: UserDocument,
-		accessToken: string,
-		refreshToken: string
-	) {
-		const response = {
-			accessToken,
-			user: await UserDto.createDto(user),
-		};
-		return { response, refreshToken };
-	}
-
 	static async refreshTokens(refreshToken: string) {
 		const userToken = await UserToken.findOne({ refreshToken });
 		if (!userToken) {
@@ -124,5 +112,17 @@ export class AuthService {
 			throw AuthException.UnauthorizedException();
 		}
 		return id;
+	}
+
+	private static async createResponseDto(
+		user: UserDocument,
+		accessToken: string,
+		refreshToken: string
+	) {
+		const response = {
+			accessToken,
+			user: await UserDto.createDto(user),
+		};
+		return { response, refreshToken };
 	}
 }

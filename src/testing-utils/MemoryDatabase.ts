@@ -9,12 +9,6 @@ export class MemoryDatabase {
 		void this.init();
 	}
 
-	private async init() {
-		this.mongodb = await MongoMemoryServer.create();
-		const uri = this.mongodb.getUri();
-		this.mongoose = await mongoose.connect(uri);
-	}
-
 	async closeDatabase() {
 		if (this.mongodb) {
 			await mongoose.connection.dropDatabase();
@@ -32,5 +26,11 @@ export class MemoryDatabase {
 				);
 			}
 		}
+	}
+
+	private async init() {
+		this.mongodb = await MongoMemoryServer.create();
+		const uri = this.mongodb.getUri();
+		this.mongoose = await mongoose.connect(uri);
 	}
 }

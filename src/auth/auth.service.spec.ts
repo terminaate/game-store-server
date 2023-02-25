@@ -5,6 +5,8 @@ import { AuthException } from '@/auth/auth.exception';
 import { UserToken } from '@/users/models/user-token.model';
 import { testDto } from '@/testing-utils/testDto';
 import { User } from '@/users/models/user.model';
+import { UserRole } from '../users/models/user-role.model';
+import { RolesService } from '../roles/roles.service';
 
 type AuthResponse = {
 	refreshToken: string;
@@ -14,16 +16,23 @@ type AuthResponse = {
 	};
 };
 
-const testAuthResponse = (res: AuthResponse) => {
+const testAuthResponse = async (res: AuthResponse) => {
 	expect(Object.keys(res)).toEqual(['response', 'refreshToken']);
 	expect(typeof res.refreshToken).toBe('string');
 	expect(Object.keys(res.response)).toEqual(['accessToken', 'user']);
 	testDto(res.response.user, UserDto);
+	const { user } = res.response;
+	expect(!!(await UserToken.findOne({ userId: user.id }))).toBeTruthy();
+	expect(!!(await UserRole.findOne({ userId: user.id }))).toBeTruthy();
 };
 
 describe('AuthService', () => {
 	const memDb = new MemoryDatabase();
 
+	beforeAll(async () => {
+		await RolesService.init();
+		await AuthService.init();
+	});
 	afterAll(() => {
 		memDb.closeDatabase();
 	});
@@ -45,7 +54,7 @@ describe('AuthService', () => {
 				username: 'terminaate',
 				password: '12345678',
 			});
-			testAuthResponse(res);
+			await testAuthResponse(res);
 			refreshMock = res.refreshToken;
 		});
 
@@ -65,7 +74,7 @@ describe('AuthService', () => {
 				username: 'terminaate',
 				password: '12345678',
 			});
-			testAuthResponse(res);
+			await testAuthResponse(res);
 		});
 
 		it('should throw error that user with this username is not exist', async () => {

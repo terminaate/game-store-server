@@ -4,8 +4,11 @@ import { GamesException } from './games.exception';
 import { GameDto } from '@/games/dtos/game.dto';
 import { testDto } from '@/testing-utils/testDto';
 import { Types } from 'mongoose';
+import { RolesService } from '../roles/roles.service';
+import { AuthService } from '../auth/auth.service';
+import { UserDto } from '../users/dtos/user.dto';
 
-const getGameMock = () => ({
+const getGameMock = (author: Types.ObjectId) => ({
 	description: 'New awesome game from Terminaate!',
 	developer: 'Terminaate',
 	genre: 'RPG',
@@ -16,20 +19,35 @@ const getGameMock = () => ({
 	platform: ['PC'],
 	publisher: 'Terminaate Games Inc.',
 	releaseDate: new Date().toISOString(),
+	author,
 });
 
 describe('GamesService', () => {
 	const memDb = new MemoryDatabase();
+	let userMock: UserDto;
 
+	beforeAll(async () => {
+		await RolesService.init();
+		await AuthService.init();
+		userMock = (
+			await AuthService.register({
+				username: 'terminaate',
+				password: '123456789',
+			})
+		).response.user;
+	});
 	afterAll(() => {
 		memDb.closeDatabase();
 	});
+
+	// TODO
+	// add test for permissions
 
 	let gameIdMock: Types.ObjectId;
 
 	describe('GamesService.createGame', () => {
 		it('should throw error that game images includes not images url', async () => {
-			const createGameDto = getGameMock();
+			const createGameDto = getGameMock(userMock.id);
 			createGameDto.images.push('https://google.com');
 			await expect(GamesService.createGame(createGameDto)).rejects.toEqual(
 				GamesException.GameImagesInNotValid()
@@ -37,7 +55,7 @@ describe('GamesService', () => {
 		});
 
 		it('should return a new game object', async () => {
-			const createGameDto = getGameMock();
+			const createGameDto = getGameMock(userMock.id);
 			const res = await GamesService.createGame(createGameDto);
 			testDto(res, GameDto);
 			gameIdMock = res.id;
@@ -67,7 +85,7 @@ describe('GamesService', () => {
 		const gamesCount = 10;
 		beforeAll(async () => {
 			for (let i = 0; i < gamesCount; i++) {
-				await GamesService.createGame(getGameMock());
+				await GamesService.createGame(getGameMock(userMock.id));
 			}
 		});
 
