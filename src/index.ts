@@ -8,6 +8,8 @@ import cors from 'cors';
 import { validateEnvVariables } from './utils/validateEnvVariables';
 import { loggerMiddleware } from '@/middlewares/logger.middleware';
 import { ResponseDto } from '@/dtos/response.dto';
+import { AuthService } from '@/auth/auth.service';
+import { RolesService } from '@/roles/roles.service';
 
 dotenv.config({ path: `.${process.env.NODE_ENV}.env` });
 validateEnvVariables();
@@ -34,6 +36,9 @@ async function bootstrap() {
 		res.status(404);
 		res.json(new ResponseDto('Not found', 404));
 	});
+
+	await RolesService.init().catch(console.log);
+	await AuthService.init().catch(console.log);
 
 	app.listen(PORT, () =>
 		console.log('Server listening on http://127.0.0.1:' + PORT)

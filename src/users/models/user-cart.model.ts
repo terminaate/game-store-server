@@ -13,8 +13,11 @@ export const UserCartSchema = new mongoose.Schema({
 	},
 });
 
-export type IUserCart = InferSchemaType<typeof UserCartSchema>;
+export type UserCartType = InferSchemaType<typeof UserCartSchema>;
 
-export type UserCartDocument = HydratedDocument<IUserCart>;
+export type UserCartDocument = HydratedDocument<UserCartType>;
 
-export const UserCart = mongoose.model<IUserCart>('UserCart', UserCartSchema);
+export const UserCart = mongoose.model<UserCartType>(
+	'UserCart',
+	UserCartSchema
+);

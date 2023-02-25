@@ -37,9 +37,12 @@ UserSchema.methods.validatePassword = function (password: string) {
 
 export interface IUser extends InferSchemaType<typeof UserSchema> {
 	setPassword(password: string): void;
+
 	validatePassword(password: string): boolean;
 }
 
 export type UserDocument = HydratedDocument<IUser>;
 
 export const User = mongoose.model<IUser>('User', UserSchema);
+
+export const UserEditableFields = ['username', 'avatar'];

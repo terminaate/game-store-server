@@ -1,16 +1,32 @@
 import { CreateGameDto } from './dtos/create-game.dto';
-import { Game, GameDocument } from './models/game.model';
-import { GamesExceptions } from './games.exceptions';
+import { Game, GameDocument, GameEditableFields } from './models/game.model';
+import { GamesException } from './games.exception';
 import { PatchGameDto } from './dtos/patch-game.dto';
 import { isImageUrl } from '@/utils/isImageUrl';
 import { Types } from 'mongoose';
 import { GameDto } from './dtos/game.dto';
+import { RolesService } from '@/roles/roles.service';
+import { Exception } from '@/lib/exception';
 
 export class GamesService {
+	// TODO
+	// Add likes || rating || comments
+
+	private static async validatePermissions(
+		game: GameDocument,
+		userId: Types.ObjectId,
+		permissions = 100
+	) {
+		const userPermissions = await RolesService.getUserPermissions(userId);
+		if (game.author !== userId && userPermissions <= permissions) {
+			throw Exception.ForbiddenException();
+		}
+	}
+
 	private static async validateImages(images: string[]) {
 		for (const image of images) {
 			if (!(await isImageUrl(image))) {
-				throw GamesExceptions.GameImagesInNotValid();
+				throw GamesException.GameImagesInNotValid();
 			}
 		}
 	}
@@ -23,36 +39,28 @@ export class GamesService {
 
 	static async getGameById(id: Types.ObjectId): Promise<GameDocument> {
 		if (!id || !Types.ObjectId.isValid(id)) {
-			throw GamesExceptions.GameNotFound();
+			throw GamesException.GameNotFound();
 		}
 		const game = await Game.findById(id);
 		if (!game) {
-			throw GamesExceptions.GameNotFound();
+			throw GamesException.GameNotFound();
 		}
 		return game;
 	}
 
-	static async patchGame(gameId: Types.ObjectId, patchGameDto: PatchGameDto) {
-		const whiteList = [
-			'name',
-			'description',
-			'genre',
-			'developer',
-			'publisher',
-			'features',
-			'platform',
-			'releaseDate',
-			'price',
-			'discount',
-			'images',
-		];
+	static async patchGame(
+		userId: Types.ObjectId,
+		gameId: Types.ObjectId,
+		patchGameDto: PatchGameDto
+	) {
 		const game = await this.getGameById(gameId);
+		await this.validatePermissions(game, userId);
 		const { images } = patchGameDto;
 		if (images) {
 			await this.validateImages(images);
 		}
 		for (const key in patchGameDto) {
-			if (whiteList.includes(key) && game[key] !== patchGameDto[key]) {
+			if (GameEditableFields.includes(key) && game[key] !== patchGameDto[key]) {
 				game[key] = patchGameDto[key];
 			}
 		}
@@ -60,8 +68,9 @@ export class GamesService {
 		return new GameDto(game);
 	}
 
-	static async deleteGame(gameId: Types.ObjectId) {
+	static async deleteGame(userId: Types.ObjectId, gameId: Types.ObjectId) {
 		const game = await this.getGameById(gameId);
+		await this.validatePermissions(game, userId);
 		await game.delete();
 		return new GameDto(game);
 	}

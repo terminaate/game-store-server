@@ -9,5 +9,7 @@ namespace NodeJS {
 		COOKIE_SECRET: string;
 		CLIENT_URL: string;
 		NODE_ENV: 'dev' | 'prod';
+		ADMIN_USERNAME: string;
+		ADMIN_PASSWORD: string;
 	}
 }

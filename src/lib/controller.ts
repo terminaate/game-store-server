@@ -5,8 +5,8 @@ import {
 	Response,
 	Router,
 } from 'express';
-import { exceptionMiddleware } from '@/middlewares/exception.middleware';
 import { isObject } from '@/utils/isObject';
+import { exceptionMiddleware } from '@/middlewares/exception.middleware';
 
 type RouterMethods =
 	| 'all'
@@ -44,9 +44,10 @@ export class Controller {
 	private static wrapper(cb: RequestHandler) {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const response = (await cb(req, res, next)) as
-					| Record<string, unknown>
-					| undefined;
+				const response = (await cb(req, res, next)) as Record<
+					string,
+					unknown
+				> | void;
 				if (!response) {
 					return next();
 				}
@@ -55,8 +56,8 @@ export class Controller {
 				} else {
 					res.send(response);
 				}
-			} catch (e: any) {
-				exceptionMiddleware(e, req, res);
+			} catch (e) {
+				return exceptionMiddleware(e as Error, req, res);
 			}
 		};
 	}

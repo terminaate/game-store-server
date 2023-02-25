@@ -3,6 +3,7 @@ import {
 	ArrayMinSize,
 	IsArray,
 	IsDateString,
+	IsMongoId,
 	IsNotEmpty,
 	IsNumber,
 	IsOptional,
@@ -13,6 +14,7 @@ import {
 	Min,
 	MinLength,
 } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateGameDto {
 	@IsString()
@@ -74,4 +76,7 @@ export class CreateGameDto {
 	@ArrayMinSize(1)
 	@ArrayMaxSize(5)
 	images: string[];
+
+	@IsMongoId()
+	author: Types.ObjectId;
 }

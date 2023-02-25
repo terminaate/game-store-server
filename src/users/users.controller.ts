@@ -13,7 +13,7 @@ import { Types } from 'mongoose';
 export class UsersController extends Controller {
 	@UsersController.Get('/@me', authMiddleware)
 	async getSelfUser(req: UserRequest) {
-		return new UserDto(req.user);
+		return UserDto.createDto(req.user);
 	}
 
 	@UsersController.Get('/:userId')
@@ -21,7 +21,7 @@ export class UsersController extends Controller {
 		req: TypedRequest<Record<string, unknown>, { userId: Types.ObjectId }>
 	) {
 		const user = await UsersService.getUserById(req.params.userId);
-		return new UserDto(user);
+		return UserDto.createDto(user);
 	}
 
 	@UsersController.Patch(

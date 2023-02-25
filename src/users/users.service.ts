@@ -1,5 +1,5 @@
-import { UsersExceptions } from './users.exceptions';
-import { User, UserDocument } from './models/user.model';
+import { UsersException } from './users.exception';
+import { User, UserDocument, UserEditableFields } from './models/user.model';
 import { Types } from 'mongoose';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { isImageUrl } from '@/utils/isImageUrl';
@@ -10,41 +10,40 @@ import { UserDto } from './dtos/user.dto';
 import { GameDto } from '@/games/dtos/game.dto';
 
 export class UsersService {
-	static async getUserById(userId: Types.ObjectId) {
+	static async getUserById(userId: string | Types.ObjectId) {
 		if (!userId || !Types.ObjectId.isValid(userId)) {
-			throw UsersExceptions.UserIdIsNotExist();
+			throw UsersException.UserIdIsNotExist();
 		}
 		const user = await User.findById(userId);
 		if (!user) {
-			throw UsersExceptions.UserIdIsNotExist();
+			throw UsersException.UserIdIsNotExist();
 		}
 		return user;
 	}
 
 	static async patchUser(user: UserDocument, patchUserDto: PatchUserDto) {
-		const whiteList = ['username', 'avatar'];
 		const { username, avatar } = patchUserDto;
 		if (username && (await User.findOne({ username }))) {
-			throw UsersExceptions.UserAlreadyExist();
+			throw UsersException.UserAlreadyExist();
 		}
 
 		if (avatar && !(await isImageUrl(avatar))) {
-			throw UsersExceptions.AvatarIsNotImage();
+			throw UsersException.AvatarIsNotImage();
 		}
 
 		for (const key in patchUserDto) {
-			if (whiteList.includes(key) && user[key] !== patchUserDto[key]) {
+			if (UserEditableFields.includes(key) && user[key] !== patchUserDto[key]) {
 				user[key] = patchUserDto[key];
 			}
 		}
 		await user.save();
-		return new UserDto(user);
+		return UserDto.createDto(user);
 	}
 
 	static async deleteUser(user: UserDocument) {
 		await user.delete();
 		await UserToken.deleteOne({ userId: user.id });
-		return new UserDto(user);
+		return UserDto.createDto(user);
 	}
 
 	private static async createCartDto(cartItems: UserCartDocument[]) {

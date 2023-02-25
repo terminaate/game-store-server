@@ -6,6 +6,9 @@ export const validateEnvVariables = () => {
 		'JWT_REFRESH_SECRET',
 		'COOKIE_SECRET',
 		'CLIENT_URL',
+		'NODE_ENV',
+		'ADMIN_USERNAME',
+		'ADMIN_PASSWORD',
 	];
 	const notFoundedEnvVariables: string[] = [];
 	for (const env of requiredEnvVariables) {

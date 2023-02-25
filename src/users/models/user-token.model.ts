@@ -12,11 +12,11 @@ export const UserTokenSchema = new mongoose.Schema({
 	},
 });
 
-export type IUserToken = InferSchemaType<typeof UserTokenSchema>;
+export type UserTokenType = InferSchemaType<typeof UserTokenSchema>;
 
-export type UserTokenDocument = HydratedDocument<IUserToken>;
+export type UserTokenDocument = HydratedDocument<UserTokenType>;
 
-export const UserToken = mongoose.model<IUserToken>(
+export const UserToken = mongoose.model<UserTokenType>(
 	'UserToken',
 	UserTokenSchema
 );

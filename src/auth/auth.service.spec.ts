@@ -1,9 +1,10 @@
 import { AuthService } from '@/auth/auth.service';
 import { UserDto } from '@/users/dtos/user.dto';
 import { MemoryDatabase } from '@/testing-utils/MemoryDatabase';
-import { AuthExceptions } from '@/auth/auth.exceptions';
+import { AuthException } from '@/auth/auth.exception';
 import { UserToken } from '@/users/models/user-token.model';
 import { testDto } from '@/testing-utils/testDto';
+import { User } from '@/users/models/user.model';
 
 type AuthResponse = {
 	refreshToken: string;
@@ -27,6 +28,15 @@ describe('AuthService', () => {
 		memDb.closeDatabase();
 	});
 
+	describe('AuthService.init', () => {
+		it('should create admin user in database', async () => {
+			await AuthService.init();
+			expect(
+				!!(await User.findOne({ username: process.env.ADMIN_USERNAME }))
+			).toBeTruthy();
+		});
+	});
+
 	let refreshMock: string;
 
 	describe('AuthService.register', () => {
@@ -45,7 +55,7 @@ describe('AuthService', () => {
 					username: 'terminaate',
 					password: '12345678',
 				})
-			).rejects.toEqual(AuthExceptions.UserAlreadyExist());
+			).rejects.toEqual(AuthException.UserAlreadyExist());
 		});
 	});
 
@@ -64,7 +74,7 @@ describe('AuthService', () => {
 					username: 'termi',
 					password: '12345678',
 				})
-			).rejects.toEqual(AuthExceptions.WrongAuthData());
+			).rejects.toEqual(AuthException.WrongAuthData());
 		});
 
 		it('should throw error that user password is not right', async () => {
@@ -73,7 +83,7 @@ describe('AuthService', () => {
 					username: 'terminaate',
 					password: '123456789',
 				})
-			).rejects.toEqual(AuthExceptions.WrongAuthData());
+			).rejects.toEqual(AuthException.WrongAuthData());
 		});
 	});
 
@@ -81,7 +91,7 @@ describe('AuthService', () => {
 		it('should throw error that refreshToken is not exist in db', async () => {
 			await expect(
 				AuthService.refreshTokens('someAbsurdValue')
-			).rejects.toEqual(AuthExceptions.ForbiddenException());
+			).rejects.toEqual(AuthException.ForbiddenException());
 		});
 
 		it('should return a new tokens (accessToken, refreshToken)', async () => {
@@ -100,7 +110,7 @@ describe('AuthService', () => {
 	describe('AuthService.deleteToken', () => {
 		it('should throw error that token is not exist', async () => {
 			await expect(AuthService.deleteToken('someAbsurdValue')).rejects.toEqual(
-				AuthExceptions.ForbiddenException()
+				AuthException.ForbiddenException()
 			);
 		});
 

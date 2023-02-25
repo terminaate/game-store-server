@@ -1,20 +1,34 @@
 import { AuthDto } from './dtos/auth.dto';
 import { User, UserDocument } from '@/users/models/user.model';
 import { UserDto } from '@/users/dtos/user.dto';
-import { AuthExceptions } from './auth.exceptions';
+import { AuthException } from './auth.exception';
 import jwt from 'jsonwebtoken';
 import { UserToken } from '@/users/models/user-token.model';
 import { Types } from 'mongoose';
+import { UserRole } from '@/users/models/user-role.model';
+import { Role } from '@/roles/models/role.model';
 
 export class AuthService {
-	private static createResponseDto(
+	static async init() {
+		const { ADMIN_USERNAME: username, ADMIN_PASSWORD: password } = process.env;
+		const candidate = await User.findOne({ username });
+		if (!candidate) {
+			const user = new User({ username });
+			user.setPassword(password);
+			await user.save();
+			const adminRole = await Role.findOne({ name: 'Admin' });
+			await UserRole.create({ userId: user.id, roleId: adminRole!.id });
+		}
+	}
+
+	private static async createResponseDto(
 		user: UserDocument,
 		accessToken: string,
 		refreshToken: string
 	) {
 		const response = {
 			accessToken,
-			user: new UserDto(user),
+			user: await UserDto.createDto(user),
 		};
 		return { response, refreshToken };
 	}
@@ -22,7 +36,7 @@ export class AuthService {
 	static async refreshTokens(refreshToken: string) {
 		const userToken = await UserToken.findOne({ refreshToken });
 		if (!userToken) {
-			throw AuthExceptions.ForbiddenException();
+			throw AuthException.ForbiddenException();
 		}
 		return this.generateTokens(userToken.userId);
 	}
@@ -58,7 +72,7 @@ export class AuthService {
 	static async deleteToken(refreshToken: string) {
 		const userToken = await UserToken.findOne({ refreshToken });
 		if (!userToken) {
-			throw AuthExceptions.ForbiddenException();
+			throw AuthException.ForbiddenException();
 		}
 		await userToken.delete();
 	}
@@ -66,11 +80,15 @@ export class AuthService {
 	static async register({ username, password }: AuthDto) {
 		const candidate = await User.findOne({ username });
 		if (candidate) {
-			throw AuthExceptions.UserAlreadyExist();
+			throw AuthException.UserAlreadyExist();
 		}
 		const user = new User({ username });
 		user.setPassword(password);
 		await user.save();
+
+		const userRole = await Role.findOne({ name: 'User' });
+		await UserRole.create({ userId: user.id, roleId: userRole!.id });
+
 		const { accessToken, refreshToken } = await this.generateTokens(user.id);
 		return this.createResponseDto(user, accessToken, refreshToken);
 	}
@@ -78,7 +96,7 @@ export class AuthService {
 	static async login({ username, password }: AuthDto) {
 		const candidate = await User.findOne({ username });
 		if (!candidate || !candidate.validatePassword(password)) {
-			throw AuthExceptions.WrongAuthData();
+			throw AuthException.WrongAuthData();
 		}
 		const { accessToken, refreshToken } = await this.generateTokens(
 			candidate.id
@@ -92,7 +110,7 @@ export class AuthService {
 			process.env.JWT_REFRESH_SECRET
 		) as Record<string, any>;
 		if (!id) {
-			throw AuthExceptions.UnauthorizedException();
+			throw AuthException.UnauthorizedException();
 		}
 		return id;
 	}
@@ -103,7 +121,7 @@ export class AuthService {
 			process.env.JWT_ACCESS_SECRET
 		) as Record<string, any>;
 		if (!id) {
-			throw AuthExceptions.UnauthorizedException();
+			throw AuthException.UnauthorizedException();
 		}
 		return id;
 	}

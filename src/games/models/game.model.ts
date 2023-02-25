@@ -1,4 +1,4 @@
-import mongoose, { HydratedDocument, InferSchemaType } from 'mongoose';
+import mongoose, { HydratedDocument, InferSchemaType, Types } from 'mongoose';
 
 export const GameSchema = new mongoose.Schema({
 	name: { type: String, required: true },
@@ -30,6 +30,11 @@ export const GameSchema = new mongoose.Schema({
 	images: {
 		type: [String],
 	},
+	author: {
+		type: Types.ObjectId,
+		ref: 'User',
+		required: true,
+	},
 });
 
 export type IGame = InferSchemaType<typeof GameSchema>;
@@ -37,3 +42,17 @@ export type IGame = InferSchemaType<typeof GameSchema>;
 export type GameDocument = HydratedDocument<IGame>;
 
 export const Game = mongoose.model<IGame>('Game', GameSchema);
+
+export const GameEditableFields = [
+	'name',
+	'description',
+	'genre',
+	'developer',
+	'publisher',
+	'features',
+	'platform',
+	'releaseDate',
+	'price',
+	'discount',
+	'images',
+];

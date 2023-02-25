@@ -12,7 +12,7 @@ import { QueryRequest } from '@/types/QueryRequest';
 
 export class GamesController extends Controller {
 	@GamesController.Post(
-		'/',
+		'/create',
 		authMiddleware,
 		validationMiddleware(CreateGameDto)
 	)
@@ -41,13 +41,13 @@ export class GamesController extends Controller {
 		validationMiddleware(PatchGameDto)
 	)
 	async patchGame(req: UserRequest<PatchGameDto, { gameId: Types.ObjectId }>) {
-		return GamesService.patchGame(req.params.gameId, req.body);
+		return GamesService.patchGame(req.user.id, req.params.gameId, req.body);
 	}
 
 	@GamesController.Delete('/:gameId', authMiddleware)
 	async deleteGame(
 		req: UserRequest<Record<string, unknown>, { gameId: Types.ObjectId }>
 	) {
-		return GamesService.deleteGame(req.params.gameId);
+		return GamesService.deleteGame(req.user.id, req.params.gameId);
 	}
 }

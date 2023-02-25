@@ -11,17 +11,13 @@ export const validationMiddleware = (dto: Class) => {
 			next();
 		} catch (errors: any) {
 			const messages = errors.reduce(
-				(c: any[], p: ValidationError) => [
+				(c: string[], p: ValidationError) => [
 					...c,
 					...Object.values(p.constraints!),
 				],
 				[]
 			);
-			return exceptionMiddleware(
-				Exception.NewException(messages, 400),
-				req,
-				res
-			);
+			return exceptionMiddleware(new Exception(messages, 400), req, res);
 		}
 	};
 };

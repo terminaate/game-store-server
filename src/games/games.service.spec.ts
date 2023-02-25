@@ -1,6 +1,6 @@
 import { MemoryDatabase } from '@/testing-utils/MemoryDatabase';
 import { GamesService } from '@/games/games.service';
-import { GamesExceptions } from '@/games/games.exceptions';
+import { GamesException } from './games.exception';
 import { GameDto } from '@/games/dtos/game.dto';
 import { testDto } from '@/testing-utils/testDto';
 import { Types } from 'mongoose';
@@ -32,7 +32,7 @@ describe('GamesService', () => {
 			const createGameDto = getGameMock();
 			createGameDto.images.push('https://google.com');
 			await expect(GamesService.createGame(createGameDto)).rejects.toEqual(
-				GamesExceptions.GameImagesInNotValid()
+				GamesException.GameImagesInNotValid()
 			);
 		});
 
@@ -47,14 +47,14 @@ describe('GamesService', () => {
 	describe('GamesService.getGameById', () => {
 		it('should return error that game id is not valid, or game is not found', async () => {
 			await expect(GamesService.getGameById('' as any)).rejects.toEqual(
-				GamesExceptions.GameNotFound()
+				GamesException.GameNotFound()
 			);
 			await expect(
 				GamesService.getGameById('asdjahskjdhaskjhiuzxycu' as any)
-			).rejects.toEqual(GamesExceptions.GameNotFound());
+			).rejects.toEqual(GamesException.GameNotFound());
 			await expect(
 				GamesService.getGameById('12310928310928301291902' as any)
-			).rejects.toEqual(GamesExceptions.GameNotFound());
+			).rejects.toEqual(GamesException.GameNotFound());
 		});
 
 		it('should return game', async () => {
