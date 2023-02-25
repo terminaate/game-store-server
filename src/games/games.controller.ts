@@ -14,7 +14,7 @@ export class GamesController extends Controller {
 	static baseUrl = '/games';
 
 	@GamesController.Post(
-		'/create',
+		'/',
 		authMiddleware,
 		validationMiddleware(CreateGameDto)
 	)

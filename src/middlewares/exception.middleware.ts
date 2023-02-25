@@ -12,7 +12,7 @@ export const exceptionMiddleware = (
 	if (err instanceof Exception) {
 		const { message, statusCode } = err;
 		res.status(statusCode);
-		return res.json({ message, statusCode });
+		return res.json({ statusCode, message });
 	}
 	return exceptionMiddleware(Exception.InternalServerError(), req, res);
 };
