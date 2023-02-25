@@ -11,6 +11,8 @@ import { UserDto } from './dtos/user.dto';
 import { Types } from 'mongoose';
 
 export class UsersController extends Controller {
+	static baseUrl = '/users';
+
 	@UsersController.Get('/@me', authMiddleware)
 	async getSelfUser(req: UserRequest) {
 		return UserDto.createDto(req.user);

@@ -7,6 +7,8 @@ import { RolesService } from '@/roles/roles.service';
 import { ParamsRequest } from '@/types/ParamsRequest';
 
 export class RolesController extends Controller {
+	static baseUrl = '/roles';
+
 	@RolesController.Post('/create', authMiddleware, permissionMiddleware(150))
 	async createRole(req: UserRequest<CreateRoleDto>) {
 		return RolesService.createRole(req.body);

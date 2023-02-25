@@ -6,7 +6,7 @@ import { RolesController } from '@/roles/roles.controller';
 
 export const apiRouter = Router();
 
-apiRouter.use('/auth', AuthController.router);
-apiRouter.use('/games', GamesController.router);
-apiRouter.use('/roles', RolesController.router);
-apiRouter.use('/users', UsersController.router);
+apiRouter.use(AuthController.router);
+apiRouter.use(GamesController.router);
+apiRouter.use(RolesController.router);
+apiRouter.use(UsersController.router);

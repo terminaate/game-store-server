@@ -18,8 +18,9 @@ type RouterMethods =
 	| 'put'
 	| 'head';
 
-export class Controller {
+export abstract class Controller {
 	static router = Router();
+	static baseUrl? = '/';
 
 	static Get(path: string, ...handlers: RequestHandler[]) {
 		return this.createDecorator('get', { path, handlers });
@@ -62,6 +63,8 @@ export class Controller {
 		};
 	}
 
+	// TODO
+	// add logging a handled routes
 	private static createDecorator(
 		method: RouterMethods,
 		params: { path: string; handlers: RequestHandler[] }
@@ -69,8 +72,12 @@ export class Controller {
 		const { router } = this;
 		const { path, handlers } = params;
 
-		return (_, propertyKey: string, descriptor: PropertyDescriptor) => {
-			router[method](path, ...handlers, this.wrapper(descriptor.value));
+		return (target, propertyKey: string, descriptor: PropertyDescriptor) => {
+			router[method](
+				this.baseUrl + path,
+				...handlers,
+				this.wrapper(descriptor.value)
+			);
 		};
 	}
 }

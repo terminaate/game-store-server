@@ -9,6 +9,8 @@ import { ResponseDto } from '@/dtos/response.dto';
 const refreshMaxAge = 1000 * 60 * 60 * 24 * 7;
 
 export class AuthController extends Controller {
+	static baseUrl = '/auth';
+
 	@AuthController.Post('/register', validationMiddleware(AuthDto))
 	async register(req: TypedRequest<AuthDto>, res: Response) {
 		const { response, refreshToken } = await AuthService.register(req.body);

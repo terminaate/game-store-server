@@ -11,6 +11,8 @@ import { Types } from 'mongoose';
 import { QueryRequest } from '@/types/QueryRequest';
 
 export class GamesController extends Controller {
+	static baseUrl = '/games';
+
 	@GamesController.Post(
 		'/create',
 		authMiddleware,
